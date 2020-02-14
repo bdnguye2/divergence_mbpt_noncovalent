@@ -1,0 +1,134 @@
+#Reads in .csv file as data1 variable
+data1<-read.csv("rpa_expand.csv")
+
+#Parse each column for each method
+dataX=data1[,1]
+dataComp5=data1[,2]*627.509
+dataCoron=data1[,3]*627.509
+dataBenz=data1[,4]*627.509
+dataHe=data1[,5]*627.509
+
+#Creates environment for high resolution png files
+#png("rpa_expand3.png", width = 5.2, height = 3.25, units = 'in', res = 600)
+
+postscript("rpa_expand4.eps", width = 10.2, height = 3.35, paper='special',horizontal=FALSE)
+
+par(mfrow=c(1,2),mar=c(2.45,4.2,1.3,0.5))
+#Beginning of the Scatterplot 
+plot(dataX,dataComp5/1000000,pch=1,col="black",lwd=1.5,lty=1,type="o",cex=1,
+     xlab='',ylab='',xlim=c(2,14),
+     yaxt='n',xaxt='n',ylim=c(-6,6),cex.lab=1)
+box(lwd=2)
+     
+#title(ylab=expression(paste(italic(E)^{(n)}, -italic(E)^{("\U221E")},' (Hartree)')),line=2.5,cex.lab=1)
+mtext(expression(paste(" ",E^c(n) ,"- ",E^c(infinity)," (kcal/mol)")), side=2, line=2.1, cex=1.5)
+mtext(expression(paste("n")), side=1, line=1.5, cex=1)
+mtext(expression(paste("(a)")), side=1, adj=1, at=0.5, line=1, cex=1.5)
+mtext(expression(paste(" ",x10^5)), side=1, adj=1, at=2.5, line=-14, cex=1)
+
+#Defining the x-axis scale and ticks
+axis(1,xaxp=c(2,20,9),cex.axis=1,col=NA,line=-0.4)
+axis(1,xaxp=c(2,20,18),label=FALSE,tck=-0.04,lwd=2)
+axis(2,yaxp=c(-10,10,10),cex.axis=1,las=2,col=NA,line=-0.2)
+axis(2,yaxp=c(-10,10,20),label=FALSE,tck=-0.04,lwd=2)
+
+abline(h=0,lwd=1.5)
+
+#Plots SCS_MP2 and RPA datapoints
+lines(dataX,dataCoron/1000000,type="o",pch=22,col="red",cex=1,lwd=1.5,lty=22)
+lines(dataX,dataBenz/1000000,type="o",pch=13,col="orange",cex=1,lwd=1.5,lty=13)
+lines(dataX,dataHe/1000000,type="o",pch=6,col="blue",cex=1,lwd=1.5,lty=6)
+
+#Legend
+legend("bottomleft",c(expression(paste('TNF@tweezer2 (',underline(alpha)[c]^{PT2},'=0.187)')),
+       expression(paste('Coronene Dimer (',underline(alpha)[c]^{PT2},'=0.240)')),
+       expression(paste('Benzene Dimer (',underline(alpha)[c]^{PT2},'=0.316)')),
+       expression(paste('Helium Dimer (',underline(alpha)[c]^{PT2},'=1.59)'))),
+       cex=1,col=c("black","red","orange","blue"),
+       pch=c(1,22,13,6),lty=c(1,2,13,3),bty='n',pt.cex=1,
+       lwd=1.5,inset=c(0.02,-0.01))
+
+#Creates an inset plot
+par(fig=c(0.06,0.35, 0.54, 0.98),new=T)
+plot(dataX,dataComp5,type="o",pch=1,cex=1,lwd=1.5,lty=1,
+     yaxt="n",xaxt="n",ylim=c(-50,50),ann=FALSE,xlim=c(2,6.2))
+box(lwd=2)
+
+abline(h=0,lwd=1.5)
+
+axis(1,xaxp=c(2,10,8),cex.axis=1,col=NA,line=-0.6)
+axis(1,xaxp=c(2,10,8),label=FALSE,tck=-0.08,lwd=2)
+axis(2,yaxp=c(-100,100,4),cex.axis=1,las=2,col=NA,line=-0.4)
+axis(2,yaxp=c(-100,100,8),label=FALSE,tck=-0.08,lwd=2)
+
+lines(dataX,dataCoron,type="o",pch=22,col="red",cex=1,lwd=1.5,lty=22)
+lines(dataX,dataBenz,type="o",pch=13,col="orange",cex=1,lwd=1.5,lty=13)
+lines(dataX,dataHe,type="o",pch=6,col="blue",cex=1,lwd=1.5,lty=6)
+
+
+# Reads in He dimer, benzene, coronene, and tweezer complexes
+data2<-read.csv("rpa_HF_plot.csv")
+
+#Parse each column for each method
+dataX=data2[,1]
+dataComp5=data2[,5]
+dataCoron=data2[,4]
+dataBenz=data2[,3]
+dataHe=data2[,2]
+
+#Creates environment for high resolution png files
+#png("rpa_expand3.png", width = 5.2, height = 3.25, units = 'in', res = 600)
+#postscript("rpa_expand4.eps", width = 5.2, height = 3.35, paper='special',horizontal=FALSE)
+
+par(mfrow=c(1,2),mar=c(2.45,4.2,1.3,0.5),new=T)
+#Beginning of the Scatterplot 
+plot(dataX,dataComp5,pch=1,col="black",lwd=1.5,lty=1,type="o",cex=1,
+     xlab='',ylab='',xlim=c(2,14),
+     yaxt='n',xaxt='n',ylim=c(-6000,6000),cex.lab=1)
+box(lwd=2)
+     
+#title(ylab=expression(paste(italic(E)^{(n)}, -italic(E)^{("\U221E")},' (Hartree)')),line=2.5,cex.lab=1)
+#mtext(expression(paste(" ",E^c(n) ,"- ",E^c(infinity)," (kcal/mol)")), side=2, line=2.7, cex=1)
+mtext(expression(paste("n")), side=1, line=1.5, cex=1)
+mtext(expression(paste("(b)")), side=1, adj=1, at=0.5, line=1, cex=1.5)
+
+#Defining the x-axis scale and ticks
+axis(1,xaxp=c(0,20,10),cex.axis=1,col=NA,line=-0.4)
+axis(1,xaxp=c(0,20,20),label=FALSE,tck=-0.04,lwd=2)
+axis(2,yaxp=c(-6000,6000,6),cex.axis=1,las=2,col=NA,line=-0.2)
+axis(2,yaxp=c(-6000,6000,12),label=FALSE,tck=-0.04,lwd=2)
+
+abline(h=0,lwd=1.5)
+
+#Plots SCS_MP2 and RPA datapoints
+lines(dataX,dataCoron,type="o",pch=22,col="red",cex=1,lwd=1.5,lty=22)
+lines(dataX,dataBenz,type="o",pch=13,col="orange",cex=1,lwd=1.5,lty=13)
+lines(dataX,dataHe,type="o",pch=6,col="blue",cex=1,lwd=1.5,lty=6)
+
+#Legend
+legend("bottomleft",c(expression(paste('TNF@tweezer2 (',underline(alpha)[c]^{PT2},'=0.520)')),
+       expression(paste('Coronene Dimer (',underline(alpha)[c]^{PT2},'=0.567)')),
+       expression(paste('Benzene Dimer (',underline(alpha)[c]^{PT2},'=0.693)')),
+       expression(paste('Helium Dimer (',underline(alpha)[c]^{PT2},'=2.44)'))),
+       cex=1,col=c("black","red","orange","blue"),
+       pch=c(1,22,13,6),lty=c(1,2,13,3),bty='n',pt.cex=1,
+       lwd=1.5,inset=c(0.02,-0.01))
+
+#Creates an inset plot
+par(fig=c(0.55,0.85, 0.54, 0.98),new=T)
+plot(dataX,dataComp5,type="o",pch=1,cex=1,lwd=1.5,lty=1,
+     yaxt="n",xaxt="n",ylim=c(-58,55),ann=FALSE,xlim=c(2,6.2))
+box(lwd=2)
+
+abline(h=0,lwd=1.5)
+
+axis(1,xaxp=c(2,10,8),cex.axis=1,col=NA,line=-0.6)
+axis(1,xaxp=c(2,10,8),label=FALSE,tck=-0.08,lwd=2)
+axis(2,yaxp=c(-100,100,4),cex.axis=1,las=2,col=NA,line=-0.4)
+axis(2,yaxp=c(-100,100,8),label=FALSE,tck=-0.08,lwd=2)
+
+lines(dataX,dataCoron,type="o",pch=22,col="red",cex=1,lwd=1.5,lty=22)
+lines(dataX,dataBenz,type="o",pch=13,col="orange",cex=1,lwd=1.5,lty=13)
+lines(dataX,dataHe,type="o",pch=6,col="blue",cex=1,lwd=1.5,lty=6)
+
+dev.off()
