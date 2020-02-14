@@ -1,0 +1,543 @@
+           Doing BLAS/Lapack in the master proc. with  8 CPUs.
+           SMPCPUS    set: Shared-memory Parallelization with   8 CPUs.
+
+           SMP Parallelization Reference:
+           C. van Wullen, J. Comput. Chem. 32 (2011) 1195--1201
+ operating system is UNIX !
+
+ ridft (c-18-81.gp.local) : TURBOMOLE V7.2 ( 21454 ) 4 Oct 2017 at 12:48:15
+ Copyright (C) 2017 TURBOMOLE GmbH, Karlsruhe
+
+
+    2018-04-24 21:11:19.770 
+
+
+
+                                  r i d f t
+
+                        DFT program with RI approximation 
+                                for coulomb part 
+
+
+
+
+                                                 
+                                 References:     
+                                                 
+          TURBOMOLE:                             
+              R. Ahlrichs, M. Baer, M. Haeser, H. Horn, and
+              C. Koelmel
+              Electronic structure calculations on workstation
+              computers: the program system TURBOMOLE
+              Chem. Phys. Lett. 162: 165 (1989)
+          Density Functional:                              
+              O. Treutler and R. Ahlrichs                      
+              Efficient Molecular Numerical Integration Schemes
+              J. Chem. Phys. 102: 346 (1995)                   
+          Parallel Version:                                
+              Performance of parallel TURBOMOLE for Density    
+              Functional Calculations                          
+              M. v. Arnim and R. Ahlrichs                      
+              J. Comp. Chem. 19: 1746 (1998)                   
+          RI-J Method:                                     
+              Auxiliary Basis Sets to approximate Coulomb      
+              Potentials                                       
+              Chem. Phys. Lett. 240: 283 (1995)                
+              K. Eichkorn, O. Treutler, H. Oehm, M. Haeser     
+              and R. Ahlrichs                                  
+              Chem. Phys. Lett. 242: 652 (1995)                
+                                                           
+              Auxiliary Basis Sets for Main Row Atoms and their
+              Use to approximate Coulomb Potentials            
+              K. Eichkorn, F. Weigend, O. Treutler and         
+              R. Ahlrichs                                      
+              Theo. Chem. Acc. 97: 119 (1997)                   
+                                                           
+              Accurate Coulomb-fitting basis sets for H to Rn 
+              F. Weigend                                        
+              Phys. Chem. Chem. Phys. 8: 1057 (2006)            
+                                                           
+          Multipole accelerated RI-J (MARI-J):             
+              Fast evaluation of the Coulomb potential for     
+              electron densities using multipole accelerated   
+              resolution of identity approximation             
+              M. Sierka, A. Hogekamp and R. Ahlrichs           
+              J. Chem. Phys. 118: 9136 (2003)                  
+          RI-JK Method:                                     
+              A fully direct RI-HF algorithm: Implementation,
+              optimised auxiliary basis sets, demonstration of
+              accuracy and efficiency                         
+              F. Weigend                                      
+              Phys. Chem. Chem. Phys. 4: 4285 (2002)           
+          Two-component HF and DFT with spin-orbit coupling:  
+              Self-consistent treatment of spin-orbit         
+              interactions with efficient Hartree-Fock and    
+              density functional methods                      
+              M. K. Armbruster, F. Weigend, C. van Wüllen and 
+              W. Klopper                                      
+              Phys. Chem. Chem. Phys. 10: 1748 (2008)         
+          Relativistic all-electron 2c calculations           
+              An efficient implementation of two-component    
+              relativistic exact-decoupling methods for large 
+              molecules                                       
+              D. Peng, N. Middendorf, F. Weigend, M. Reiher   
+              J. Chem. Phys. 138, 184105 (2013)               
+                                         
+
+
+
+
+              +--------------------------------------------------+
+              |      general information about current run       |
+              +--------------------------------------------------+
+
+ 
+
+ DENSITY CONVERGENCE CHECK SWITCHED ON !
+ SCF CONVERGENCE IF RMS(delta[D]) <     0.1000000000E-06
+
+ PBE functional
+ exchange:    LDA + PBE
+ correlation: LDA (PW) + PBE
+ A DFT calculation using the RI-J approximation will be carried out.
+ Allocatable memory for RI due to $ricore (MB):                   500
+
+
+              +--------------------------------------------------+
+              | Atomic coordinate, charge and isotop information |
+              +--------------------------------------------------+
+
+                    atomic coordinates            atom    charge  isotop
+         -2.47506832    2.23020976   -0.04756505    c      6.000     0
+         -1.37061919    4.07263887    0.85550424    o      8.000     0
+         -1.25784169    0.17962734   -0.92973485    n      7.000     0
+          0.67006412    0.09722294   -0.86796863    h      1.000     0
+         -2.23673094   -1.27291894   -1.64549055    h      1.000     0
+         -5.32282815    2.18452086   -0.20901500    c      6.000     0
+         -6.08610669    2.38585758    1.68768112    h      1.000     0
+         -6.06493909    0.46985020   -1.06183728    h      1.000     0
+         -5.93970806    3.81081347   -1.30181932    h      1.000     0
+          5.25268621    2.01045258    0.25389839    c      6.000     0
+          4.14828914    0.16982071   -0.65266176    o      8.000     0
+          4.03553711    4.06032020    1.13800025    n      7.000     0
+          2.10781734    4.14429544    1.07318015    h      1.000     0
+          5.01446073    5.51155654    1.85632417    h      1.000     0
+          8.10050195    2.05634341    0.41495046    c      6.000     0
+          8.84103094    3.75643461    1.29780029    h      1.000     0
+          8.86311264    1.89090726   -1.48569888    h      1.000     0
+          8.71991404    0.41119526    1.47731733    h      1.000     0
+ 
+       center of nuclear mass  :    1.38883792    2.12052659    0.10286393
+       center of nuclear charge:    1.38884207    2.12052630    0.10287029
+
+              +--------------------------------------------------+
+              |               basis set information              |
+              +--------------------------------------------------+
+
+              we will work with the 1s 3p 5d 7f 9g ... basis set
+              ...i.e. with spherical basis functions...
+
+   type   atoms  prim   cont   basis
+   ---------------------------------------------------------------------------
+    c        4     77     57   def2-QZVP   [7s4p3d2f1g|15s8p3d2f1g]
+    o        2     77     57   def2-QZVP   [7s4p3d2f1g|15s8p3d2f1g]
+    n        2     77     57   def2-QZVP   [7s4p3d2f1g|15s8p3d2f1g]
+    h       10     33     30   def2-QZVP   [4s3p2d1f|7s3p2d1f]
+   ---------------------------------------------------------------------------
+   total:   18    946    756
+   ---------------------------------------------------------------------------
+
+   total number of primitive shells          :  100
+   total number of contracted shells         :  236
+   total number of cartesian basis functions :  926
+   total number of SCF-basis functions       :  756
+
+
+ integral neglect threshold       :  0.36E-13
+ integral storage threshold THIZE :  0.10E-04
+ integral storage threshold THIME :         5
+
+ RI-J AUXILIARY BASIS SET information:
+
+              we will work with the 1s 3p 5d 7f 9g ... basis set
+              ...i.e. with spherical basis functions...
+
+   type   atoms  prim   cont   basis
+   ---------------------------------------------------------------------------
+    c        4     70     49   def2-QZVP   [6s4p3d1f1g|12s5p4d2f1g]
+    o        2     70     49   def2-QZVP   [6s4p3d1f1g|12s5p4d2f1g]
+    n        2     70     49   def2-QZVP   [6s4p3d1f1g|12s5p4d2f1g]
+    h       10     16     11   def2-QZVP   [3s1p1d|5s2p1d]
+   ---------------------------------------------------------------------------
+   total:   18    720    502
+   ---------------------------------------------------------------------------
+
+   total number of primitive shells          :   80
+   total number of contracted shells         :  170
+   total number of cartesian basis functions :  608
+   total number of SCF-basis functions       :  502
+
+
+ symmetry group of the molecule :   c1 
+
+ the group has the following generators :
+   c1(z)
+
+    1 symmetry operations found
+
+ there are 1 real representations :   a   
+
+ maximum number of shells which are related by symmetry :  1
+
+
+    mo occupation :
+   irrep   mo's   occupied
+    a      756       32
+ 
+ number of basis functions   :                    756
+ number of occupied orbitals :                     32
+ 
+  
+           ------------------
+           density functional
+           ------------------
+ PBE functional
+ exchange:    LDA + PBE
+ correlation: LDA (PW) + PBE
+
+ iterations will be done with small grid
+  
+ spherical integration : Lebedev's spherical grid
+ spherical gridsize    :                     5
+    i.e. gridpoints    :                   590
+ value for diffuse not defined
+ radial integration    : Chebyshev 2nd kind (scaling 3)
+ radial gridsize       :                     8
+ integration cells     :                    18
+ partition function    : becke
+ partition sharpness   :                     3
+  
+
+ biggest AO integral is expected to be     6.990327543
+  
+           ------------------------
+               RI-J - INFORMATION
+           ------------------------
+ Contributions to RI integral batches: 
+  neglected integral batches:                  8210
+  direct contribution:                         9862
+  memory contribution:                  9894
+ Memory core needed for (P|Q) and Cholesky      2 MByte
+ Memory core minimum needed except of (P|Q)     1 MByte
+ Total minimum memory core needed (sum)         3 MByte
+  
+ ****************************************
+ Memory allocated for RI-J   439 MByte
+ ****************************************
+                                            
+
+          ------------------------
+          nuclear repulsion energy  :   373.661108064    
+          ------------------------
+
+
+         -----------------
+         -S,T+V- integrals
+         -----------------
+
+ 1e-integrals will be neglected if expon. factor < 0.360903E-14
+ Difference densities >>NOT<< switched on in parallel ridft!
+
+ DIIS switched on: error vector is FDS-SDF
+ Max. Iterations for DIIS is     :   4
+ DIIS matrix (see manual) 
+    Scaling factor of diagonals  :  1.200
+    threshold for scaling factor :  0.000
+
+ scf convergence criterion : increment of total energy < .1000000D-08
+                  and increment of one-electron energy < .1000000D-05
+
+  MOs are in ASCII format !
+
+
+ automatic virtual orbital shift switched on 
+      shift if e(lumo)-e(homo) < 0.10000000    
+
+
+ reading orbital data $scfmo  from file mos
+ orbital characterization : expanded
+ mo provided and orthogonalized by Cholesky decomposition
+
+ DSCF restart information will be dumped onto file mos
+
+
+ Starting SCF iterations
+
+          Overall gridpoints after grid construction =         84998
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   1  -416.26375310825    -1303.7173255     513.79246436    0.000D+00 0.360D-13
+                            Exc = -55.6311116651     Coul =  569.423576025    
+                              N = 63.999974534    
+                            current damping = 0.700
+ 
+          max. resid. norm for Fia-block=  8.049D-01 for orbital     10a         
+          max. resid. fock norm         =  7.200D+01 for orbital    685a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   2  -417.86777213786    -1307.9800639     516.45118375    0.328D-02 0.360D-13
+                            Exc = -55.6671899675     Coul =  572.118373714    
+                              N = 63.999987429    
+                            current damping = 0.650
+ 
+          Norm of current diis error:  3.4049    
+          max. resid. norm for Fia-block=  1.590D-01 for orbital      1a         
+          max. resid. fock norm         =  3.439D-01 for orbital    420a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   3  -418.08464902421    -1310.0958668     518.35010976    0.173D-02 0.360D-13
+                            Exc = -55.9719457201     Coul =  574.322055479    
+                              N = 63.999991190    
+                            current damping = 0.550
+ 
+          Norm of current diis error:  1.6194    
+          max. resid. norm for Fia-block=  6.406D-02 for orbital      1a         
+          max. resid. fock norm         =  7.202D-02 for orbital     89a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   4  -418.15275397267    -1309.4783313     517.66446931    0.119D-02 0.360D-13
+                            Exc = -55.8948077261     Coul =  573.559277037    
+                              N = 63.999995698    
+                            current damping = 0.600
+ 
+          Norm of current diis error: 0.70911    
+          max. resid. norm for Fia-block=  3.388D-02 for orbital     10a         
+          max. resid. fock norm         =  6.282D-02 for orbital    719a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   5  -418.16366780534    -1310.4231023     518.59832648    0.446D-03 0.360D-13
+                            Exc = -56.0161696157     Coul =  574.614496094    
+                              N = 63.999995955    
+                            current damping = 0.650
+ 
+          Norm of current diis error: 0.40274    
+          max. resid. norm for Fia-block=  1.152D-02 for orbital     31a         
+          max. resid. fock norm         =  1.310D-02 for orbital    683a         
+          mo-orthogonalization: Cholesky decomposition
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   6  -418.16836238269    -1310.3601971     518.53072664    0.291D-03 0.360D-13
+                            Exc = -56.0133065398     Coul =  574.544033185    
+                              N = 63.999996377    
+                            current damping = 0.700
+ 
+          Norm of current diis error: 0.11218    
+          max. resid. norm for Fia-block=  3.936D-03 for orbital     29a         
+          max. resid. fock norm         =  4.788D-03 for orbital    710a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   7  -418.16877002762    -1310.2182192     518.38834113    0.119D-03 0.360D-13
+                            Exc = -55.9973152527     Coul =  574.385656386    
+                              N = 63.999996535    
+                            current damping = 0.550
+ 
+          Norm of current diis error: 0.45548E-01
+          max. resid. norm for Fia-block=  1.841D-03 for orbital     10a         
+          max. resid. fock norm         =  2.961D-03 for orbital    398a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   8  -418.16882890381    -1310.2663996     518.43646262    0.404D-04 0.360D-13
+                            Exc = -56.0039588787     Coul =  574.440421496    
+                              N = 63.999996566    
+                            current damping = 0.600
+ 
+          Norm of current diis error: 0.12938E-01
+          max. resid. norm for Fia-block=  6.016D-04 for orbital     10a         
+          max. resid. fock norm         =  8.350D-04 for orbital    701a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+   9  -418.16883478908    -1310.2827302     518.45278739    0.147D-04 0.360D-13
+                            Exc = -56.0058574125     Coul =  574.458644801    
+                              N = 63.999996580    
+                            current damping = 0.450
+ 
+          Norm of current diis error: 0.52352E-02
+          max. resid. norm for Fia-block=  2.696D-04 for orbital     31a         
+          max. resid. fock norm         =  2.895D-04 for orbital     60a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+  10  -418.16883528582    -1310.2724373     518.44249394    0.885D-05 0.360D-13
+                            Exc = -56.0049334755     Coul =  574.447427412    
+                              N = 63.999996589    
+                            current damping = 0.500
+ 
+          Norm of current diis error: 0.47507E-02
+          max. resid. norm for Fia-block=  1.464D-04 for orbital     30a         
+          max. resid. fock norm         =  2.596D-04 for orbital    710a         
+          mo-orthogonalization: Cholesky decomposition
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+  11  -418.16883586527    -1310.2741360     518.44419211    0.166D-05 0.360D-13
+                            Exc = -56.0051912781     Coul =  574.449383388    
+                              N = 63.999996588    
+                            current damping = 0.550
+ 
+          Norm of current diis error: 0.17350E-02
+          max. resid. norm for Fia-block=  5.683D-05 for orbital     17a         
+          max. resid. fock norm         =  7.216D-05 for orbital    683a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+  12  -418.16883591755    -1310.2788108     518.44886684    0.495D-06 0.360D-13
+                            Exc = -56.0056794708     Coul =  574.454546312    
+                              N = 63.999996589    
+                            current damping = 0.400
+ 
+          Norm of current diis error: 0.69417E-03
+          max. resid. norm for Fia-block=  2.426D-05 for orbital     28a         
+          max. resid. fock norm         =  2.872D-05 for orbital     34a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+  13  -418.16883592455    -1310.2782145     518.44827048    0.514D-06 0.360D-13
+                            Exc = -56.0055659963     Coul =  574.453836476    
+                              N = 63.999996590    
+                            current damping = 0.450
+ 
+          Norm of current diis error: 0.56267E-03
+          max. resid. norm for Fia-block=  8.759D-06 for orbital     21a         
+          max. resid. fock norm         =  1.500D-05 for orbital    638a         
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+  14  -418.16883593065    -1310.2777136     518.44776965    0.124D-06 0.360D-13
+                            Exc = -56.0055449084     Coul =  574.453314554    
+                              N = 63.999996590    
+                            current damping = 0.300
+ 
+          Norm of current diis error: 0.15584E-03
+          max. resid. norm for Fia-block=  4.137D-06 for orbital     32a         
+          max. resid. fock norm         =  6.763D-06 for orbital    701a         
+
+ DENSITY CONVERGED !
+
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+  15  -418.16883593116    -1310.2779313     518.44798735    0.564D-07 0.360D-13
+                            Exc = -56.0055708177     Coul =  574.453558166    
+                              N = 63.999996590    
+                            current damping = 0.350
+ 
+          Norm of current diis error: 0.74268E-04
+          max. resid. norm for Fia-block=  2.181D-06 for orbital     30a         
+          max. resid. fock norm         =  2.963D-06 for orbital     30a         
+          mo-orthogonalization: Cholesky decomposition
+
+ DENSITY CONVERGED !
+
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+  16  -418.16883593129    -1310.2778989     518.44795489    0.303D-07 0.360D-13
+                            Exc = -56.0055676883     Coul =  574.453522574    
+                              N = 63.999996590    
+                            current damping = 0.400
+ 
+          Norm of current diis error: 0.27233E-04
+          max. resid. norm for Fia-block=  6.313D-07 for orbital     30a         
+          max. resid. fock norm         =  8.935D-07 for orbital    755a         
+
+ ENERGY & DENSITY CONVERGED !
+
+          Overall gridpoints after grid construction =        277790
+
+ ITERATION  ENERGY          1e-ENERGY        2e-ENERGY     RMS[dD(SAO)]   TOL
+  17  -418.16884391682    -1310.2778751     518.44792316    0.682D-08 0.360D-13
+                            Exc = -56.0055736151     Coul =  574.453496778    
+                              N = 64.000002103    
+                            current damping = 0.250
+ 
+          Norm of current diis error: 0.58116E-05
+          max. resid. norm for Fia-block=  2.537D-07 for orbital     30a         
+          max. resid. fock norm         =  7.742D-07 for orbital    755a         
+
+ End of SCF iterations
+
+   convergence criteria satisfied after    17 iterations
+
+
+                  ------------------------------------------ 
+                 |  total energy      =   -418.16884391682  |
+                  ------------------------------------------ 
+                 :  kinetic energy    =    416.63612172304  :
+                 :  potential energy  =   -834.80496563987  :
+                 :  virial theorem    =      1.99633468104  :
+                 :  wavefunction norm =      1.00000000000  :
+                  .......................................... 
+
+
+ <geterg> : there is no data group $energy 
+
+
+ <skperg> : $end is missing 
+
+
+ orbitals $scfmo  will be written to file mos
+
+    irrep                 28a         29a         30a         31a         32a   
+ eigenvalues H         -0.32245    -0.23821    -0.22989    -0.22327    -0.20964
+            eV          -8.7744     -6.4821     -6.2556     -6.0754     -5.7046
+ occupation              2.0000      2.0000      2.0000      2.0000      2.0000 
+
+    irrep                 33a         34a         35a         36a         37a   
+ eigenvalues H         -0.02124    -0.00970    -0.00474     0.00159     0.03757
+            eV          -0.5779     -0.2640     -0.1289      0.0432      1.0223
+ 
+ 
+ 
+ 
+ ==============================================================================
+                           electrostatic moments
+ ==============================================================================
+
+ reference point for electrostatic moments:    0.00000   0.00000   0.00000
+
+ 
+              nuc           elec       ->  total
+ ------------------------------------------------------------------------------
+                          charge      
+ ------------------------------------------------------------------------------
+          64.000000     -64.000000      -0.000000
+ 
+ ------------------------------------------------------------------------------
+                       dipole moment  
+ ------------------------------------------------------------------------------
+   x      88.885893     -88.885700       0.000193
+   y     135.713683    -135.714081      -0.000398
+   z       6.583699      -6.583150       0.000548
+ 
+   | dipole moment | =     0.0007 a.u. =     0.0018 debye 
+ 
+ ------------------------------------------------------------------------------
+                     quadrupole moment
+ ------------------------------------------------------------------------------
+  xx    1420.672587   -1447.588604     -26.916017
+  yy     444.122685    -480.527485     -36.404800
+  zz      45.877804     -82.735033     -36.857230
+  xy     187.352050    -180.700105       6.651946
+  xz      74.603220     -71.025756       3.577463
+  yz      80.897315     -80.090964       0.806351
+ 
+     1/3  trace=     -33.392682
+     anisotropy=      16.359253
+ 
+ ==============================================================================
+ 
+
+
+    ------------------------------------------------------------------------
+         total  cpu-time :  8 minutes and  4 seconds
+         total wall-time :  1 minutes and  8 seconds
+    ------------------------------------------------------------------------
+
+   ****  ridft : all done  ****
+
+
+    2018-04-24 21:12:27.267 
+
