@@ -1,0 +1,29 @@
+#Reads in .csv file as data1 variable
+data1<-read.csv("eig_q.csv")
+
+#Parse each column for each method
+dataX=data1[,1]
+data_eigQ=data1[,2]
+
+#Creates environment for high resolution png files
+#png("conv.png", width = 7.8, height = 3.25, units = 'in', res = 600)
+postscript("eig_q.eps", width = 7.8, height = 3.25, paper="special", horizontal=FALSE)
+
+par(mfrow=c(1,1),mar=c(2,2.5,1,1))
+#Beginning of the Scatterplot 
+plot(dataX,data_eigQ,pch=1,col="blue",lwd=1,
+     xlab='',ylab='',cex=1,
+     lty=1,yaxt="n",xaxt="n",ylim=c(0,12),cex.lab=0.5,cex.axis=0.7)
+
+title(xlab='Atoms',line=1,cex.lab=0.8)
+title(ylab=expression(paste('Eigenvalue of ',bold(Q)(omega))),line=1.2,cex.lab=0.8)
+
+#Defining the x-axis scale and ticks
+axis(1,xaxp=c(0,300,15),cex.axis=0.7,col=NA,line=-0.8)
+axis(1,xaxp=c(0,300,30),label=FALSE,tck=-0.02)
+axis(2,yaxp=c(0,12,6),cex.axis=0.7,col=NA,line=-0.6,las=2)
+axis(2,yaxp=c(0,12,12),label=FALSE,tck=-0.02)
+
+abline(h=0,lwd=0.7)
+
+dev.off()
